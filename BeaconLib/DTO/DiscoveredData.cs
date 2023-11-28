@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BeaconLib.DTO
+﻿namespace BeaconLib.DTO
 {
     public class DiscoveredData
     {

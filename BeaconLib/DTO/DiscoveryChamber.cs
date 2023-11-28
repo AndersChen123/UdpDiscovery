@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BeaconLib.DTO
+﻿namespace BeaconLib.DTO
 {
     public static class DiscoveryChamber
     {

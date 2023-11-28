@@ -1,24 +1,19 @@
 ﻿using BeaconLib.Interfaces;
 using BeaconLib.LocalMachine;
 using BeaconLib.RemoteMachine;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeaconLib
 {
     public class ProbeFactory
     {
-        public IProbe Get(bool IsLocal, string Chamber)
+        public IProbe Get(bool isLocal, string chamber)
         {
-            if (IsLocal == true)
+            if (isLocal)
             {
-                return new LocalProbe(Chamber);
+                return new LocalProbe(chamber);
             }
-            else
-            {
-                return new RemoteProbe(Chamber);
-            }
+
+            return new RemoteProbe(chamber);
         }
     }
 }

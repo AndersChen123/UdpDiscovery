@@ -28,9 +28,9 @@ namespace Server
 
                 ownBeacon.BeaconData = JsonConvert.SerializeObject(new DiscoveredData()
                 {
-                    Ip = LocalIP.GetLocalIp(),
+                    Ip = LocalIp.GetLocalIp(),
                     Port = 50001,
-                    GrpcEndpoint = LocalIP.GetLocalIp() + ":" + 50001
+                    GrpcEndpoint = LocalIp.GetLocalIp() + ":" + 50001
                 });
 
                 ownBeacon.Start();

@@ -1,28 +1,28 @@
-﻿using BeaconLib.DTO;
-using BeaconLib.RemoteMachine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text;
+using BeaconLib.DTO;
+using BeaconLib.RemoteMachine;
+using NLog;
 
 namespace BeaconLib.Helpers
 {
     public static class Utils
     {
-
-        private static readonly NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         //for each network interface
-        public static Dictionary<IPAddress, IPAddress> GetLocalIPAddress()
+        public static Dictionary<IPAddress, IPAddress> GetLocalIpAddress()
         {
-            Dictionary<IPAddress, IPAddress> localIp = new Dictionary<IPAddress, IPAddress>();
-            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            var localIp = new Dictionary<IPAddress, IPAddress>();
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (ni.OperationalStatus == OperationalStatus.Up && ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+                if ((ni.OperationalStatus == OperationalStatus.Up && ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211) ||
+                    ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
                 {
-                    foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                    foreach (var ip in ni.GetIPProperties().UnicastAddresses)
                     {
                         if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
                         {
@@ -31,6 +31,7 @@ namespace BeaconLib.Helpers
                     }
                 }
             }
+
             return localIp;
         }
 
@@ -38,21 +39,21 @@ namespace BeaconLib.Helpers
         {
             try
             {
-                IPEndPoint BroadcastEndpoint = null;
+                IPEndPoint broadcastEndpoint = null;
 
-                log.Trace($"BroadCastOnAllInterfaces with way: {broadcastWay}");
+                Log.Trace($"BroadCastOnAllInterfaces with way: {broadcastWay}");
 
                 //port is important, dont set it to 0,
                 //must match between exposer and consumer
-                if(broadcastWay == BroadcastWay.Client)
+                if (broadcastWay == BroadcastWay.Client)
                 {
-                    BroadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, RemoteBeacon.DiscoveryPort);
-                    log.Trace($"Will broadcast on port: {RemoteBeacon.DiscoveryPort}");
+                    broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, RemoteBeacon.DiscoveryPort);
+                    Log.Trace($"Will broadcast on port: {RemoteBeacon.DiscoveryPort}");
                 }
                 else
                 {
-                    BroadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, RemoteProbe.DiscoveryPort);
-                    log.Trace($"Will broadcast on port: {RemoteProbe.DiscoveryPort}");
+                    broadcastEndpoint = new IPEndPoint(IPAddress.Broadcast, RemoteProbe.DiscoveryPort);
+                    Log.Trace($"Will broadcast on port: {RemoteProbe.DiscoveryPort}");
                 }
 
                 foreach (var ip in interfaces.Keys) // send the message to each network adapters
@@ -62,7 +63,7 @@ namespace BeaconLib.Helpers
                         UdpClient clientInterface = null;
                         try
                         {
-                            log.Trace($"BroadcastProbe Invoked! To: {ip}");
+                            Log.Trace($"BroadcastProbe Invoked! To: {ip}");
                             clientInterface = new UdpClient(new IPEndPoint(ip, 0));
                             //if you dont dont enable broadcast effects will be only visible in local machine
                             clientInterface.EnableBroadcast = true;
@@ -71,11 +72,11 @@ namespace BeaconLib.Helpers
                             //by default its already true
                             //clientInterface.ExclusiveAddressUse = true;
 
-                            clientInterface.Send(data, data.Length, BroadcastEndpoint);
+                            clientInterface.Send(data, data.Length, broadcastEndpoint);
                         }
                         catch (Exception e)
                         {
-                            log.Error("Unable to send");
+                            Log.Debug("Unable to send\r\n" + e);
                         }
                         finally
                         {
@@ -83,13 +84,11 @@ namespace BeaconLib.Helpers
                         }
                     }
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                log.Error(ex);
+                Log.Debug(ex);
             }
         }
-
     }
 }

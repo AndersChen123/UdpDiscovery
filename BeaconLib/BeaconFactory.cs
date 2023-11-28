@@ -1,24 +1,19 @@
 ﻿using BeaconLib.Interfaces;
 using BeaconLib.LocalMachine;
 using BeaconLib.RemoteMachine;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeaconLib
 {
     public class BeaconFactory
     {
-        public IBeacon Get(bool IsLocal, string Chamber)
+        public IBeacon Get(bool isLocal, string chamber)
         {
-            if (IsLocal == true)
+            if (isLocal)
             {
-                return new LocalBeacon(Chamber);
+                return new LocalBeacon(chamber);
             }
-            else
-            {
-                return new RemoteBeacon(Chamber);
-            }
+
+            return new RemoteBeacon(chamber);
         }
     }
 }
