@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeaconLib\BeaconLib.csproj" />
+    <ProjectReference Include="..\BeaconLib\UdpDiscovery.csproj" />
   </ItemGroup>
 
   <ItemGroup>

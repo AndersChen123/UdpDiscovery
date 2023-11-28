@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Version>1.0.1</Version>
+    <Authors>anders chen</Authors>
+    <Product>UdpDiscovery</Product>
+    <Company />
+    <Description>Udp local and remote discovery by using Beacon/Probe protocol</Description>
+    <PackageProjectUrl>https://github.com/AndersChen123/UdpDiscovery</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AndersChen123/UdpDiscovery</RepositoryUrl>
+    <PackageTags>udp discovery beacon probe</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>UdpDiscovery</Title>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>False</IncludeSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.2.6" />
+  </ItemGroup>
+
+</Project>
