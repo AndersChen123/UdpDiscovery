@@ -124,7 +124,7 @@ namespace BeaconLib.RemoteMachine
                 var bytes = _udp.EndReceive(ar, ref _sender);
 
                 var typeBytes = SharedMethods.Encode(BeaconType).ToList();
-                Log.Debug(string.Join(", ", typeBytes.Select(_ => (char)_)));
+                Log.Trace(string.Join(", ", typeBytes.Select(_ => (char)_)));
                 if (SharedMethods.HasPrefix(bytes, typeBytes))
                 {
                     Log.Trace("Beacon has prefix");
